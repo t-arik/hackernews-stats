@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-logging='download.log'
-exec &>> $logging
-
 cd $(dirname "$0")
+
+exec &>> 'error.log'
 
 dirname="data/$(date '+%Y-%m-%d-%H-%M')"
 mkdir -p $dirname
@@ -27,8 +26,8 @@ wget -P \
     --retry-on-http-error=503 \
     --no-verbose \
     --content-disposition \
-    --append-output=$logging \
+    --append-output='download.log' \
     $links
 
-rename 's/item\?id=//' "$dirname/*"
+rename 's/item\?id=//' $dirname/*
 

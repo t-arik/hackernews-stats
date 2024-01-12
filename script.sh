@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
+logging='download.log'
+exec &>> $logging
+
 cd $(dirname "$0")
 
-dir="data/$(date '+%Y-%m-%d-%H')"
-mkdir -p $dir && cd $dir
+dirname="data/$(date '+%Y-%m-%d-%H-%M')"
+mkdir -p $dirname
 
-wget -q -O index.html 'https://news.ycombinator.com/news'
+index='index.html'
+wget -q -O "$dirname/$index" 'https://news.ycombinator.com/news'
 
-cat index.html \
+links=$(cat "$dirname/$index" \
     | hxclean \
     | hxselect 'a[href^="item"]' \
     | hxpipe \
@@ -14,7 +18,17 @@ cat index.html \
     | sed 's/^.*id=\(.*\)$/\1/' \
     | sort \
     | uniq \
-    | xargs -I {} wget -q -O '{}.html' 'https://news.ycombinator.com/item?id={}' \
+    | awk '{print "https://news.ycombinator.com/item?id=" $1}' \
+    | xargs)
 
-echo "[$(date '+%Y-%m-%d-%H')] Downloaded $(ls -1 | wc -l) files from news.ycombinator.com." \
-    >> ../../log.txt
+wget -P \
+    $dirname \
+    --wait 2 \
+    --retry-on-http-error=503 \
+    --no-verbose \
+    --content-disposition \
+    --append-output=$logging \
+    $links
+
+rename 's/item\?id=//' "$dirname/*"
+

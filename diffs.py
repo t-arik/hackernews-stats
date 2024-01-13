@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.11
 
+import sys
 import difflib
-import glob
 import itertools
 
 def find_common_parts(files):
@@ -22,6 +22,7 @@ def find_common_parts(files):
     return common_parts
 
 if __name__ == "__main__":
-    files = glob.glob('test*')
+    files = sys.argv[1:]
     common_parts = find_common_parts(files)
-    print(common_parts)
+    for line in common_parts:
+        print(line)

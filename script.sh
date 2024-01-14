@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 cd $(dirname "$0")
 
-exec &>> 'error.log'
-
 dirname="data/$(date '+%Y-%m-%d-%H-%M')"
 mkdir -p $dirname
 

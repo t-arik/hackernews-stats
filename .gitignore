@@ -3,3 +3,5 @@ download.log
 error.log
 venv
 export/
+*.tar.gz
+*.db

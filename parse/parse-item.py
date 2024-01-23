@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-
 import argparse
-import re
-import sys
 import typing
 import bs4
 import json
@@ -28,9 +25,10 @@ if subline != None:
     item['comment_count'] = subline.find_all('a')[-1].text.split()[0]
 item['comments'] = []
 
-for comment in html.find_all('tr', class_='athing comtr'):
+for idx, comment in enumerate(html.find_all('tr', class_='athing comtr')):
     record = {}
     record['id'] = comment['id']
+    record['index'] = idx
     record['indent'] = comment.find('td', class_='ind')['indent']
     record['user'] = comment.find('a', class_='hnuser').text
     record['timestamp'] = comment.find('span', class_='age')['title']
@@ -41,9 +39,8 @@ for comment in html.find_all('tr', class_='athing comtr'):
     record['content'] = content.text
     item['comments'].append(record)
 
-# filename = args.outfile.name
-# if args.run:
-json.dump(item, args.outfile, indent=2)
-exit(0)
-# else:
-#     print(f'Would write to {filename}. Use --run to actually write.', file=sys.stderr)
+filename = args.outfile.name
+if args.run:
+    json.dump(item, args.outfile, indent=2)
+else:
+    print(f'Would write to {filename}. Use --run to actually write.', file=sys.stderr)

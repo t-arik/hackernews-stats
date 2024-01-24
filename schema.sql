@@ -13,27 +13,27 @@ CREATE TABLE IF NOT EXISTS news_page (
 );
 
 CREATE TABLE IF NOT EXISTS item_page (
-    id INTEGER,
+    id INTEGER NOT NULL,
     captured_at TEXT,
     title TEXT,
     link TEXT,
-    description TEXT NOT NULL,
-    points INTEGER NOT NULL,
-    user TEXT NOT NULL,
-    comment_count INTEGER NOT NULL,
+    description TEXT,
+    points INTEGER,
+    user TEXT,
+    comment_count INTEGER,
     PRIMARY KEY(id, captured_at)
 );
 
 CREATE TABLE IF NOT EXISTS comment (
     id INTEGER NOT NULL,
-    caputured_at INT NOT NULL,
+    captured_at INT NOT NULL,
     idx INTEGER NOT NULL,
     indent INTEGER NOT NULL,
-    user TEXT NOT NULL,
+    user TEXT,
     timestamp TEXT NOT NULL,
     age TEXT NOT NULL,
-    contents TEXT NOT NULL,
+    content TEXT,
     item_id INT NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id, captured_at)
     FOREIGN KEY(item_id) REFERENCES item_page(id)
 );

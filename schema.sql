@@ -26,11 +26,14 @@ CREATE TABLE IF NOT EXISTS item_page (
 
 CREATE TABLE IF NOT EXISTS comment (
     id INTEGER NOT NULL,
+    caputured_at INT NOT NULL,
     idx INTEGER NOT NULL,
     indent INTEGER NOT NULL,
     user TEXT NOT NULL,
     timestamp TEXT NOT NULL,
     age TEXT NOT NULL,
     contents TEXT NOT NULL,
+    item_id INT NOT NULL,
     PRIMARY KEY(id)
+    FOREIGN KEY(item_id) REFERENCES item_page(id)
 );

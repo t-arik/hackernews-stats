@@ -1,7 +1,5 @@
 data/
-download.log
-error.log
 venv
-export/
 *.tar.gz
+*.tar.xz
 *.db
